@@ -41,10 +41,10 @@ function setup_nebula_k6(){
 
 function setup_go(){
   # setup go 
-  if [ `command -v go` ];then
-    echo 'already install golang environment.'
-    return 
-  fi
+  #if [ `command -v go` ];then
+    #echo 'already install golang environment.'
+    #return 
+  #fi
   echo "begin install golang environment"
     
   os=`uname | tr "[A-Z]" "[a-z]"`
