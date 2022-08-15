@@ -16,6 +16,10 @@ class Match1(BaseGoScenario):
     nGQL = "MATCH (n:Person)-[:IS_LOCATED_IN]->(p:Place) WHERE id(n)=={} RETURN n.Person.firstName AS firstName, n.Person.lastName AS lastName,n.Person.birthday AS birthday,n.Person.locationIP AS locationIP,n.Person.browserUsed AS browserUsed,id(p) AS cityId,n.Person.gender AS gender,n.Person.creationDate AS creationDate"
     abstract = False
 
+class Match2(BaseGoScenario):
+    nGQL = "MATCH (n:Person)<-[:HAS_CREATOR]-(m:`Comment`)-[:REPLY_OF*0..100]->(p:Post) WHERE id(n)=={} MATCH (p)-[:HAS_CREATOR]->(c) RETURN id(m) as messageId, CASE tags(m)[0] WHEN 'Comment' THEN coalesce(m.`Comment`.imageFile,m.`Comment`.content) ELSE coalesce(m.Post.imageFile,m.Post.content) END AS messageContent, CASE tags(m)[0] WHEN 'Comment' THEN m.`Comment`.creationDate ELSE m.Post.creationDate END AS messageCreationDate, id(p) AS originalPostId, id(c) AS originalPostAuthorId, c.Person.firstName as originalPostAuthorFirstName, c.Person.lastName as originalPostAuthorLastName ORDER BY messageCreationDate DESC LIMIT 10"
+    abstract = False
+
 class Match3(BaseGoScenario):
     nGQL = "MATCH (n:Person)-[r:KNOWS]-(friend) WHERE id(n) == {} RETURN id(friend) AS personId, friend.Person.firstName AS firstName, friend.Person.lastName AS lastName, r.creationDate AS friendshipCreationDate ORDER BY friendshipCreationDate DESC, personId ASC"
     abstract = False
